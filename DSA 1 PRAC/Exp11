@@ -1,0 +1,75 @@
+import java.util.*;
+
+public class GraphTraversal {
+    private int vertices;
+    private int[][] adjMatrix;
+
+    public GraphTraversal(int v) {
+        vertices = v;
+        adjMatrix = new int[v][v];
+    }
+
+    // Add edge from source to destination
+    public void addEdge(int src, int dest) {
+        adjMatrix[src][dest] = 1;
+    }
+
+    // DFS using recursion
+    public void DFS(int start) {
+        boolean[] visited = new boolean[vertices];
+        System.out.print("DFS traversal starting from vertex " + start + ": ");
+        dfsUtil(start, visited);
+        System.out.println();
+    }
+
+    private void dfsUtil(int v, boolean[] visited) {
+        visited[v] = true;
+        System.out.print(v + " ");
+
+        for (int i = 0; i < vertices; i++) {
+            if (adjMatrix[v][i] == 1 && !visited[i]) {
+                dfsUtil(i, visited);
+            }
+        }
+    }
+
+    // BFS using queue
+    public void BFS(int start) {
+        boolean[] visited = new boolean[vertices];
+        Queue<Integer> queue = new LinkedList<>();
+
+        visited[start] = true;
+        queue.offer(start);
+
+        System.out.print("BFS traversal starting from vertex " + start + ": ");
+
+        while (!queue.isEmpty()) {
+            int v = queue.poll();
+            System.out.print(v + " ");
+
+            for (int i = 0; i < vertices; i++) {
+                if (adjMatrix[v][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.offer(i);
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        GraphTraversal graph = new GraphTraversal(5);
+
+        // Sample edges for directed graph
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 3);
+        graph.addEdge(3, 4);
+
+        graph.DFS(2);
+        graph.BFS(2);
+    }
+}
