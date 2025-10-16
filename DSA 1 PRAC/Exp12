@@ -1,0 +1,43 @@
+public class BinarySearchMusicPlaylist {
+
+    // Binary search method to find the target song in the sorted playlist
+    public static int binarySearch(String[] playlist, String target) {
+        int low = 0;
+        int high = playlist.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int comparison = target.compareTo(playlist[mid]);
+
+            if (comparison == 0) {
+                // Song found at mid index
+                return mid;
+            } else if (comparison < 0) {
+                // Target comes before mid, search left half
+                high = mid - 1;
+            } else {
+                // Target comes after mid, search right half
+                low = mid + 1;
+            }
+        }
+        // Song not found
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        // Sorted playlist of songs
+        String[] playlist = {
+            "Believer", "Closer", "Hallelujah", "Shape of You", "Thunder", "Viva La Vida"
+        };
+
+        String targetSong = "Shape of You";
+
+        int position = binarySearch(playlist, targetSong);
+
+        if (position != -1) {
+            System.out.println("Song "" + targetSong + "" found at position: " + position);
+        } else {
+            System.out.println("Song "" + targetSong + "" not found in the playlist.");
+        }
+    }
+}
