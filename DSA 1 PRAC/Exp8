@@ -1,0 +1,133 @@
+class CircularDoublyLinkedList {
+    // Node class representing each element in the list
+    class Node {
+        int data;
+        Node next, prev;
+
+        Node(int data) {
+            this.data = data;
+            next = prev = null;
+        }
+    }
+
+    Node head = null;
+
+    // Insert a new node at the beginning
+    void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            newNode.next = newNode.prev = newNode;
+            head = newNode;
+            return;
+        }
+        Node last = head.prev;
+
+        newNode.next = head;
+        newNode.prev = last;
+        last.next = head.prev = newNode;
+        head = newNode;
+    }
+
+    // Insert a new node at the end
+    void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            newNode.next = newNode.prev = newNode;
+            head = newNode;
+            return;
+        }
+        Node last = head.prev;
+
+        newNode.next = head;
+        head.prev = newNode;
+        newNode.prev = last;
+        last.next = newNode;
+    }
+
+    // Delete a node with given data
+    void deleteNode(int data) {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node current = head, prevNode = null;
+        boolean found = false;
+
+        do {
+            if (current.data == data) {
+                found = true;
+                break;
+            }
+            prevNode = current;
+            current = current.next;
+        } while (current != head);
+
+        if (!found) {
+            System.out.println("Node with data " + data + " not found");
+            return;
+        }
+
+        // Only one node in list
+        if (current.next == current && current.prev == current) {
+            head = null;
+            return;
+        }
+
+        Node prev = current.prev;
+        Node next = current.next;
+
+        prev.next = next;
+        next.prev = prev;
+
+        if (current == head) {
+            head = next;
+        }
+    }
+
+    // Display list in forward direction
+    void displayForward() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node temp = head;
+        do {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        } while (temp != head);
+        System.out.println();
+    }
+
+    // Display list in backward direction
+    void displayBackward() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node temp = head.prev; // last node
+        do {
+            System.out.print(temp.data + " ");
+            temp = temp.prev;
+        } while (temp != head.prev);
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        CircularDoublyLinkedList cdll = new CircularDoublyLinkedList();
+
+        cdll.insertAtBeginning(10);
+        cdll.insertAtBeginning(20);
+        cdll.insertAtEnd(30);
+        cdll.insertAtEnd(40);
+
+        System.out.print("Forward Traversal: ");
+        cdll.displayForward(); // 20 10 30 40
+
+        System.out.print("Backward Traversal: ");
+        cdll.displayBackward(); // 40 30 10 20
+
+        cdll.deleteNode(10);
+        System.out.print("After deleting 10, Forward Traversal: ");
+        cdll.displayForward(); // 20 30 40
+    }
+}
